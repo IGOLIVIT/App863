@@ -17,7 +17,7 @@ final class RestViewModel: ObservableObject {
     
     @AppStorage("sumRest") var sumRest: Int = 0
     
-    @Published var resPhotos: [String] = ["b1", "b21"]
+    @Published var resPhotos: [String] = ["Breakfast", "Dinner", "Supper"]
     @Published var currentResPhoto = ""
     @Published var currentFoodPhoto = ""
     

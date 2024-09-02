@@ -43,7 +43,13 @@ struct AddRest: View {
                                     
                                 }, label: {
                                     
-                                    Image(index)
+                                    HStack {
+                                        
+                                        Text(index)
+                                        
+                                        Image(index)
+                                        
+                                    }
                                 })
                             }
                             
