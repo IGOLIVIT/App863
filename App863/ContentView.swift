@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
+        
+    @State var isFetched: Bool = false
+    
+    @State var isBlock: Bool = true
+    @State var isDead: Bool = false
     
     @AppStorage("status") var status: Bool = false
     
@@ -20,16 +25,67 @@ struct ContentView: View {
         
         ZStack {
             
-            Color.white
+            Color.black
                 .ignoresSafeArea()
             
-            if status {
+            if isFetched == false {
+                
+                LoadingView()
+                
+            } else if isFetched == true {
+                
+                if isBlock == true {
+                    
+                    if status {
+                        
+                        HomeView()
+                        
+                    } else {
+                        
+                        R1()
+                    }
+                    
+                } else if isBlock == false {
+                    
+                    if status {
+                        
+                        WebSystem()
+                        
+                    } else {
+                        
+                        U1()
+                    }
+                }
+            }
+        }
+        .onAppear {
             
-            HomeView()
+            check_data()
+        }
+    }
+    
+    private func check_data() {
+        
+        self.isDead = DataManager().isDead
+        
+        let networkService = NetworkService()
+        let deviceData = DeviceInfo.collectData()
+        
+        networkService.sendRequest(endpoint: deviceData) { result in
+            
+            print(result)
+            
+            switch result {
                 
-            } else {
+            case .success(let success):
                 
-                R1()
+                self.isBlock = success
+                self.isFetched = true
+                
+            case .failure(_):
+                
+                self.isBlock = self.isDead
+                self.isFetched = true
             }
         }
     }
